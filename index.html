@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Robot State-aware Contrastive Loss (RS-CL): a lightweight representation regularization that aligns VLM representations with the robot's proprioceptive states for accurate action prediction.">
-  <meta name="keywords" content="RS-CL, Vision-Language-Action, VLA, Contrastive Learning, Representation Regularization, Robot Learning">
+    content="Robot State-aware Contrastive Loss (RS-CL): a lightweight representation regularization that aligns VLM representations with the robot's proprioceptive states for accurate action prediction.">
+  <meta name="keywords"
+    content="RS-CL, Vision-Language-Action, VLA, Contrastive Learning, Representation Regularization, Robot Learning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contrastive Representation Regularization for Vision-Language-Action Models</title>
 
   <meta property="og:title" content="Contrastive Representation Regularization for Vision-Language-Action Models" />
-  <meta property="og:description" content="RS-CL aligns VLM representations with the robot's proprioceptive states, substantially improving action prediction in VLA models." />
+  <meta property="og:description"
+    content="RS-CL aligns VLM representations with the robot's proprioceptive states, substantially improving action prediction in VLA models." />
   <meta property="og:image" content="./static/images/overview.png" />
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
 
@@ -30,269 +31,298 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
 </head>
+
 <body>
 
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-2 publication-title">Contrastive Representation Regularization for Vision-Language-Action Models</h1>
-          <h2 class="title is-4" style="color:#3273dc; margin-top:-0.5rem; margin-bottom:1.2rem;">Accepted to ICML 2026</h2>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://ismty0805.github.io">Taeyoung Kim</a><sup>1,2</sup>,</span>
-            <span class="author-block">
-              <a href="https://jiminlx.github.io/">Jimin Lee</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a href="https://myungkyukoo.github.io">Myungkyu Koo</a><sup>1,2</sup>,</span>
-            <span class="author-block">
-              <a href="https://kingdy2002.github.io/">Dongyoung Kim</a><sup>1,2</sup>,</span>
-            <span class="author-block">
-              <a href="https://kyungmnlee.github.io/">Kyungmin Lee</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a href="https://changyeon.site">Changyeon Kim</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a href="https://younggyo.me/">Younggyo Seo</a><sup>3,&dagger;</sup>,</span>
-            <span class="author-block">
-              <a href="https://alinlab.kaist.ac.kr/shin.html">Jinwoo Shin</a><sup>1,2,&dagger;</sup></span>
-          </div>
-
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>KAIST,</span>
-            <span class="author-block"><sup>2</sup>RLWRLD,</span>
-            <span class="author-block"><sup>3</sup>UC Berkeley</span>
-          </div>
-          <div class="is-size-6 publication-authors">
-            <span class="author-block"><sup>&dagger;</sup>Equal advising</span>
-          </div>
-
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <!-- arXiv abstract Link. -->
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2510.01711"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-              <!-- PDF Link. -->
-              <span class="link-block">
-                <a href="https://arxiv.org/pdf/2510.01711"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <!-- Code Link (Coming Soon). -->
-              <span class="link-block">
-                <a class="external-link button is-normal is-rounded is-dark" style="cursor:default; opacity:0.65;" disabled>
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code (Coming Soon)</span>
-                </a>
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <img src="./static/images/overview.png" alt="RS-CL overview"/>
-      <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
-        <span class="dnerf">RS-CL</span> extends the standard VLA training framework with a contrastive
-        regularization path that aligns VLM representations with the robot's <i>proprioceptive states</i>.
-      </h2>
-    </div>
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Vision-Language-Action (VLA) models have shown strong capabilities in robot manipulation by
-            leveraging rich representations from pre-trained Vision-Language Models (VLMs). However, their
-            representations arguably remain suboptimal, lacking sensitivity to robotic signals such as control
-            actions and proprioceptive states. To address the issue, we introduce <i>Robot State-aware
-            Contrastive Loss (RS-CL)</i>, a simple and effective representation regularization for VLA models,
-            designed to bridge the gap between VLM representations and robotic signals. In particular, RS-CL
-            aligns the representations more closely with the robot's proprioceptive states by using relative
-            distances between the states as soft supervision.
-          </p>
-          <p>
-            Complementing the original action prediction objective, RS-CL enhances control-relevant
-            representation learning, while being lightweight and fully compatible with standard VLA training
-            pipelines. Our empirical results demonstrate that RS-CL substantially improves the performance of
-            state-of-the-art VLA models; it pushes the prior art to 69.7% on the RoboCasa-Kitchen benchmark,
-            and boosts success rates from 45.0% to 58.3% on challenging real-robot manipulation tasks.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
-  </div>
-</section>
-
-
-<section class="section" style="padding-top:0;">
-  <div class="container is-max-desktop">
-
-    <!-- Motivation. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Motivation: VLM representations miss robotic signals</h2>
-        <div class="content has-text-justified">
-          <p>
-            We visualize VLM embeddings of robot episodes performing the <i>same</i> task ("Open the microwave /
-            cabinet door") across different scenes. Pre-trained VLM representations are dominated by visual
-            appearance (e.g., scene layout, surrounding objects), clustering by visual cues rather than
-            control-relevant factors. RS-CL instead guides embeddings to align with the robot's proprioceptive
-            states, capturing common robotic signals (e.g., current pose, next action) and aligning all episodes
-            by task progress.
-          </p>
-        </div>
+  <section class="hero">
+    <div class="hero-body" style="padding-bottom:1rem;">
+      <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <img src="./static/images/observation_tsne_vlm.png" alt="Pre-trained VLM representations"/>
-            <p>Pre-trained VLM representations</p>
+            <h1 class="title is-2 publication-title">Contrastive Representation Regularization for
+              Vision-Language-Action Models</h1>
+            <h2 class="title is-4" style="color:#3273dc; margin-top:-0.5rem; margin-bottom:1.2rem;">Accepted to ICML
+              2026</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://ismty0805.github.io">Taeyoung Kim</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                <a href="https://jiminlx.github.io/">Jimin Lee</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://myungkyukoo.github.io">Myungkyu Koo</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                <a href="https://kingdy2002.github.io/">Dongyoung Kim</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                <a href="https://kyungmnlee.github.io/">Kyungmin Lee</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://changyeon.site">Changyeon Kim</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://younggyo.me/">Younggyo Seo</a><sup>3,&dagger;</sup>,</span>
+              <span class="author-block">
+                <a href="https://alinlab.kaist.ac.kr/shin.html">Jinwoo Shin</a><sup>1,2,&dagger;</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>KAIST,</span>
+              <span class="author-block"><sup>2</sup>RLWRLD,</span>
+              <span class="author-block"><sup>3</sup>UC Berkeley</span>
+            </div>
+            <div class="is-size-6 publication-authors">
+              <span class="author-block"><sup>&dagger;</sup>Equal advising</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- arXiv abstract Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2510.01711" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2510.01711" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
           </div>
-          <div class="column has-text-centered">
-            <img src="./static/images/observation_tsne_rscl.png" alt="RS-CL aligned representations"/>
-            <p>RS-CL aligned representations</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body" style="padding-top:0; padding-bottom:0;">
+        <div
+          style="background:#eaf2fb; border-left:5px solid #3273dc; border-radius:8px; padding:1.1rem 1.4rem; margin-bottom:0;">
+          <p style="font-size:1.05rem; line-height:1.6; margin:0; text-align:left;">
+            <b style="color:#3273dc;">TL;DR:</b>
+            <b>Robot State-aware Contrastive Loss (RS-CL)</b> is a lightweight contrastive regularizer that
+            grounds VLM representations in the robot's <i>proprioceptive states</i>. It integrates seamlessly
+            into standard VLA training without extra stages or substantial compute overhead, improving
+            control-relevant representation learning and manipulation performance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Vision-Language-Action (VLA) models have shown strong capabilities in robot manipulation by
+              leveraging rich representations from pre-trained Vision-Language Models (VLMs). However, their
+              representations arguably remain suboptimal, lacking sensitivity to robotic signals such as control
+              actions and proprioceptive states. To address the issue, we introduce <i>Robot State-aware
+                Contrastive Loss (RS-CL)</i>, a simple and effective representation regularization for VLA models,
+              designed to bridge the gap between VLM representations and robotic signals. In particular, RS-CL
+              aligns the representations more closely with the robot's proprioceptive states by using relative
+              distances between the states as soft supervision. Complementing the original action prediction
+              objective, RS-CL enhances control-relevant representation learning, while being lightweight and
+              fully compatible with standard VLA training pipelines. Our empirical results demonstrate that
+              RS-CL substantially improves the performance of state-of-the-art VLA models, boosting success
+              rates from 45.0% to 58.3% on challenging real-robot manipulation tasks.
+            </p>
           </div>
         </div>
       </div>
+      <!--/ Abstract. -->
     </div>
-    <!--/ Motivation. -->
+  </section>
 
-    <!-- Method. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Method</h2>
-        <div class="content has-text-justified">
-          <p>
-            RS-CL is an auxiliary objective that regularizes the VLM representation space using supervision from
-            the robot's proprioceptive states. It is built from three key components:
-          </p>
-          <ul>
-            <li><b>Learnable summarization token</b> &mdash; amortizes long VLM output embeddings into a compact
-              representation for efficient contrastive learning.</li>
-            <li><b>Robot state-aware weighting</b> &mdash; a soft-weighted InfoNCE loss that assigns pairwise
-              weights from the relative distances between proprioceptive states, pulling together embeddings with
-              similar robot states.</li>
-            <li><b>View cutoff augmentation</b> &mdash; a lightweight representation-level augmentation that masks
-              out the feature slice of a randomly selected observation view, generating diverse contrastive pairs
-              with minimal overhead.</li>
-          </ul>
-          <p>
-            By operating at the representation level and training end-to-end in a single stage, RS-CL remains
-            fully compatible with existing VLA training pipelines.
-          </p>
-        </div>
-        <div class="content has-text-centered">
-          <img src="./static/images/method_viewcutoff.png" alt="View cutoff augmentation" width="80%"/>
-          <p><i>View cutoff</i> randomly masks the embedding slice associated with one observation viewpoint,
-            forming contrastive pairs at the representation level.</p>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container is-max-desktop">
+
+      <!-- Motivation. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Motivation: VLM representations miss robotic signals</h2>
+          <div class="content has-text-justified">
+            <p>
+              We visualize VLM embeddings of robot episodes performing the <i>same</i> task ("Open the microwave /
+              cabinet door") across different scenes. Pre-trained VLM representations are dominated by visual
+              appearance (e.g., scene layout, surrounding objects), clustering by visual cues rather than
+              control-relevant factors. RS-CL instead guides embeddings to align with the robot's proprioceptive
+              states, capturing common robotic signals (e.g., current pose, next action) and aligning all episodes
+              by task progress.
+            </p>
+          </div>
+          <div class="columns is-centered" style="align-items:flex-start;">
+            <div class="column has-text-centered">
+              <img src="./static/images/identical_task.png" alt="Identical task trajectories"
+                style="margin-top:1.5rem; margin-left:-4rem;" />
+              <p style="margin-top:1.2rem; padding-left:1rem;">Identical task trajectories</p>
+            </div>
+            <div class="column has-text-centered">
+              <img src="./static/images/observation_tsne_vlm.png" alt="Pre-trained VLM representations" />
+              <p>Pre-trained VLM representations</p>
+            </div>
+            <div class="column has-text-centered">
+              <img src="./static/images/observation_tsne_rscl.png" alt="RS-CL aligned representations" />
+              <p>RS-CL aligned representations</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <!--/ Method. -->
+      <!--/ Motivation. -->
 
-    <!-- Results. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Results</h2>
-
-        <h3 class="title is-4">RoboCasa-Kitchen benchmark</h3>
-        <div class="content has-text-justified">
-          <p>
-            RS-CL achieves state-of-the-art performance on the RoboCasa-Kitchen benchmark, reaching a success
-            rate of 69.7% and surpassing all strong baselines. It yields especially large gains on pick-and-place
-            tasks that require precise positioning during grasping and placing.
-          </p>
-        </div>
-        <div class="content has-text-centered">
-          <img src="./static/images/experiment_robocasa.png" alt="RoboCasa-Kitchen results" width="85%"/>
-        </div>
-
-        <h3 class="title is-4">Real-robot manipulation</h3>
-        <div class="content has-text-justified">
-          <p>
-            On a 7-DoF real-robot manipulator, RS-CL improves average success rates from 45.0% to 58.3% on
-            in-domain tasks, and consistently improves generalization across visual, physical, language, and
-            lighting variations.
-          </p>
-        </div>
-        <div class="content has-text-centered">
-          <img src="./static/images/experiment_realworld.png" alt="Real-robot results" width="95%"/>
+      <!-- Method. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Method</h2>
+          <div class="content has-text-justified">
+            <p>
+              <b>Robot State-aware Contrastive Loss (RS-CL)</b> is an objective that regularizes the VLM representation
+              space using supervision from
+              the robot's proprioceptive states. It is built from three key components:
+            </p>
+            <ul>
+              <li><b>Learnable summarization token</b> &mdash; amortizes long VLM output embeddings into a compact
+                representation for efficient contrastive learning.</li>
+              <li><b>Robot state-aware weighting</b> &mdash; a soft-weighted InfoNCE loss that assigns pairwise
+                weights from the relative distances between proprioceptive states, pulling together embeddings with
+                similar robot states.</li>
+              <li><b>View cutoff augmentation</b> &mdash; a lightweight representation-level augmentation that masks
+                out the feature slice of a randomly selected observation view, generating diverse contrastive pairs
+                with minimal overhead.</li>
+            </ul>
+            <p>
+              By operating at the representation level and training end-to-end in a single stage, RS-CL remains
+              fully compatible with existing VLA training pipelines.
+            </p>
+          </div>
+          <div class="content has-text-centered">
+            <img src="./static/images/overview.png" alt="RS-CL overview" />
+          </div>
         </div>
       </div>
+      <!--/ Method. -->
+
+      <!-- Results. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Results</h2>
+
+          <h3 class="title is-4">Representation analysis</h3>
+          <div class="content has-text-justified">
+            <p>
+              RS-CL successfully injects control-relevant structure into the VLM representation while preserving the
+              initial
+              semantics.
+            </p>
+          </div>
+          <div class="content has-text-centered">
+            <table class="table is-bordered is-hoverable"
+              style="margin:0 auto; border-collapse:collapse; font-size:0.95rem;">
+              <thead>
+                <tr style="background:#f5f5f5;">
+                  <th style="text-align:left;">Representation</th>
+                  <th style="text-align:center;">Scene Acc. (%)</th>
+                  <th style="text-align:center;">Task-progress Acc. (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align:left;">Pre-trained VLM embeddings</td>
+                  <td style="text-align:center;">99.6</td>
+                  <td style="text-align:center;">1.2</td>
+                </tr>
+                <tr style="background:#eaf2fb;">
+                  <td style="text-align:left;"><b>Embeddings trained with RS-CL</b></td>
+                  <td style="text-align:center;"><b>93.6</b></td>
+                  <td style="text-align:center;"><b>22.9</b></td>
+                </tr>
+                <tr>
+                  <td style="text-align:left;">Ground-truth proprioceptive states</td>
+                  <td style="text-align:center;">53.1</td>
+                  <td style="text-align:center;">25.6</td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="margin-top:0.9rem;">KNN classification accuracy (%) on the representation space.</p>
+          </div>
+
+          <h3 class="title is-4">Real-robot manipulation</h3>
+          <div class="content has-text-justified">
+            <p>
+              RS-CL raises manipulation precision on real robot tasks &mdash;
+              improving average success rates from 45.0% to 58.3% &mdash; without harming generalization
+              (e.g., visual appearance, physical properties, language following, lighting conditions).
+            </p>
+          </div>
+          <div class="content has-text-centered">
+            <img src="./static/images/realworld_tasks.png" alt="Real-robot task examples" width="100%" />
+          </div>
+          <div class="content has-text-centered">
+            <img src="./static/images/experiment_realworld.png" alt="Real-robot results" width="95%" />
+          </div>
+        </div>
+      </div>
+      <!--/ Results. -->
+
     </div>
-    <!--/ Results. -->
-
-  </div>
-</section>
+  </section>
 
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{kim2026rscl,
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@inproceedings{kim2026contrastive,
   author    = {Kim, Taeyoung and Lee, Jimin and Koo, Myungkyu and Kim, Dongyoung and Lee, Kyungmin and Kim, Changyeon and Seo, Younggyo and Shin, Jinwoo},
   title     = {Contrastive Representation Regularization for Vision-Language-Action Models},
   booktitle = {International Conference on Machine Learning (ICML)},
   year      = {2026},
 }</code></pre>
-  </div>
-</section>
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link" href="https://arxiv.org/pdf/2510.01711">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://ismty0805.github.io" class="external-link">
-        <i class="fas fa-home"></i>
-      </a>
     </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            This website borrows the <a href="https://github.com/nerfies/nerfies.github.io">source code</a> of the
-            Nerfies project page. We thank the authors for open-sourcing their template.
-          </p>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/pdf/2510.01711">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://ismty0805.github.io" class="external-link">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website borrows the <a href="https://github.com/nerfies/nerfies.github.io">source code</a> of the
+              Nerfies project page. We thank the authors for open-sourcing their template.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
 </body>
+
 </html>
